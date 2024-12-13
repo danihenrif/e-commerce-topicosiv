@@ -9,7 +9,6 @@ public class BuyController {
 
     @PostMapping
     public Product buyProduct(@RequestBody Product product) {
-        System.out.println("Recebido produto: " + product.getId());
         return product;
     }
 

@@ -1,0 +1,51 @@
+services:
+  buyservice:
+    build:
+      context: .
+      dockerfile: e-commerce/Dockerfile
+    container_name: buy-container
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./e-commerce/logs:/app/logs
+
+  storeservice:
+    build:
+      context: .
+      dockerfile: store/Dockerfile
+    container_name: store-container
+    ports:
+      - "8081:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./store/logs:/app/logs
+
+  exchangeservice:
+    build:
+      context: .
+      dockerfile: exchange/Dockerfile
+    container_name: exchange-container
+    ports:
+      - "8082:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./store/logs:/app/logs
+
+  bonusservice:
+    build:
+      context: .
+      dockerfile: fidelity/Dockerfile
+    container_name: fidelity-container
+    ports:
+      - "8083:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./store/logs:/app/logs
+networks:
+  app-network:
+    driver: bridge

@@ -5,8 +5,8 @@ FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 
 # Copiando o pom.xml e o diretório src para o container
-COPY e-commerce/pom.xml .
-COPY e-commerce/src ./src
+COPY exchange/pom.xml .
+COPY exchange/src ./src
 
 # Rodando o Maven para compilar o projeto e gerar o arquivo JAR
 RUN mvn clean install -DskipTests
@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar /app/app.jar
 
 # Expondo a porta onde o aplicativo Spring Boot vai rodar
-EXPOSE 8080
+EXPOSE 8082
 
 # Comando para rodar o JAR com Java
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
