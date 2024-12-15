@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 public class BonusController {
-    @PostMapping("/{id}/{bonus}")
-    public String bonus(@PathVariable int id, @PathVariable int bonus) {
+    @PostMapping()
+    public String bonus() {
         return "seu bonus é nenhum :)";
     }
 }

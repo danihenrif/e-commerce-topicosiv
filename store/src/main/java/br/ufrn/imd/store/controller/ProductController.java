@@ -2,10 +2,11 @@ package br.ufrn.imd.store.controller;
 
 import br.ufrn.imd.store.model.Product;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/product")
-public class StoreController {
+public class ProductController {
 
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable int id){

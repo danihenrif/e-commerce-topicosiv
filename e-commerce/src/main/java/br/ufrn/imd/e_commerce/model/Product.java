@@ -2,8 +2,14 @@ package br.ufrn.imd.e_commerce.model;
 
 public class Product {
     private int id;
-    private int idUser;
-    private boolean ft;
+    private String name;
+    private double value;
+    
+    public Product(int id, String name, double value) {
+    	this.id = id;
+    	this.name = name;
+    	this.value = value;
+	}
 
     public int getId() {
         return id;
@@ -13,19 +19,19 @@ public class Product {
         this.id = id;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public String getName() {
+        return name;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public boolean isFt() {
-        return ft;
+    public double getValue() {
+        return value;
     }
 
-    public void setFt(boolean ft) {
-        this.ft = ft;
+    public void setValue(double value) {
+        this.value = value;
     }
 }

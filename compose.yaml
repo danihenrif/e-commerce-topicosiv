@@ -12,6 +12,7 @@ services:
       - ./e-commerce/logs:/app/logs
 
   storeservice:
+    hostname: store
     build:
       context: .
       dockerfile: store/Dockerfile
