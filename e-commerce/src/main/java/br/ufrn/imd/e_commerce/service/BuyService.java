@@ -1,12 +1,9 @@
 package br.ufrn.imd.e_commerce.service;
 
-import java.util.UUID;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import br.ufrn.imd.e_commerce.model.BonusDTO;
 import br.ufrn.imd.e_commerce.model.BuyDTO;
 import br.ufrn.imd.e_commerce.model.Product;
 
@@ -24,9 +21,10 @@ public class BuyService {
 		this.restTemplate = restTemplate;
 	}
 	
-	public void buy(BuyDTO buyObject) {
+	public Product buy(BuyDTO buyObject) {
 		ResponseEntity<Product> responseProduct = restTemplate.getForEntity(URI_PRODUCT + buyObject.getId(), Product.class);
 		Product product = responseProduct.getBody();
+		return product;
 		
 //		ResponseEntity<Double> responseExchange = restTemplate.getForEntity(URI_EXCHANGE, Double.class);
 //		ResponseEntity<UUID> responseSell = restTemplate.postForEntity(URI_SELL + buyObject.getId(), null, UUID.class);

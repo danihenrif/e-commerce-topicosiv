@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufrn.imd.store.model.Product;
-
 @RestController
 @RequestMapping("/sell")
 public class SellController {

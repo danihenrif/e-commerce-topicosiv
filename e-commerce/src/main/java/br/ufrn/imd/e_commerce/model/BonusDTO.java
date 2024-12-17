@@ -1,6 +1,5 @@
 package br.ufrn.imd.e_commerce.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
