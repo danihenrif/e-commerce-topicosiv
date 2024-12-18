@@ -16,7 +16,7 @@ public class BuyController {
 	}
 	
     @PostMapping
-    public Product buyProduct(@RequestBody BuyDTO buyDTO) {
+    public Product buyProduct(@RequestBody BuyDTO buyDTO) throws Exception {
     	Product product = service.buy(buyDTO);
         return product;
     }
