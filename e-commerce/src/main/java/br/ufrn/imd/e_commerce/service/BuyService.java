@@ -1,13 +1,20 @@
 package br.ufrn.imd.e_commerce.service;
 
+import java.util.UUID;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import br.ufrn.imd.e_commerce.model.BuyDTO;
 import br.ufrn.imd.e_commerce.model.Product;
-
+import br.ufrn.imd.e_commerce.model.SellDTO;
+import br.ufrn.imd.e_commerce.exception.CrashException;
+import br.ufrn.imd.e_commerce.exception.ErrorException;
 import br.ufrn.imd.e_commerce.exception.OmissionException;
 
 @Service
@@ -27,13 +34,18 @@ public class BuyService {
 	
 	public ResponseEntity buy(BuyDTO buyObject) {
 		try {
-			Product product = getProduct(buyObject);
-//			getExchange(buyObject);
+//			Product product = getProduct(buyObject);
+//			Double value = getExchange(buyObject);
+			UUID idCompra = getSell(buyObject);
 			
-			return ResponseEntity.ok(product);
+			return ResponseEntity.ok(idCompra);
 			
 		} catch (OmissionException e) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} catch (CrashException e) {
+			return new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE);
+		} catch (ErrorException e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -66,8 +78,31 @@ public class BuyService {
 			taxaDeCambio = responseExchange.getBody();
 			return responseExchange.getBody();
 		} catch (RuntimeException e) {
-			return taxaDeCambio + 1; // Somando 1 para mostrar que está pegando do cache
+			
+			if (taxaDeCambio == 0.0) {
+				throw new CrashException("Servidor de taxa de cambio fora do ar");
+			}
+			
+			return taxaDeCambio;
 		}
+	}
+	
+	public UUID getSell(BuyDTO buyObject) {
+//		try {
+			var headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			var entity = new HttpEntity<>(new SellDTO(buyObject.getId()), headers);
+		
+			ResponseEntity<UUID> responseSell = restTemplate.postForEntity(
+				URI_SELL,
+				entity,
+				UUID.class
+			);
+			
+			return responseSell.getBody();
+//		} catch (RuntimeException e) {
+//			throw new ErrorException("Erro interno do servidor ao tentar realziara venda");
+//		}
 	}
 
 	//TODO: Bonus,Sell;
