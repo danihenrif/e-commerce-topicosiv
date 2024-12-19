@@ -2,6 +2,10 @@ package br.ufrn.imd.e_commerce.controller;
 
 import br.ufrn.imd.e_commerce.model.BuyDTO;
 import br.ufrn.imd.e_commerce.service.BuyService;
+
+import java.util.UUID;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,11 +19,9 @@ public class BuyController {
 	}
 	
     @PostMapping
-    public Double buyProduct(@RequestBody BuyDTO buyDTO) throws Exception {
-    	// Product product = service.buy(buyDTO);
-        // return product;
-        Double value = service.getExchange(buyDTO);
-        return value;
+    public ResponseEntity<UUID> buyProduct(@RequestBody BuyDTO buyDTO) throws Exception {
+    	
+        return service.buy(buyDTO);
     }
 
     @GetMapping

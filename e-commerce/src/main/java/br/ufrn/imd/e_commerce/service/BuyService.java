@@ -1,5 +1,6 @@
 package br.ufrn.imd.e_commerce.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +14,7 @@ import br.ufrn.imd.e_commerce.exception.OmissionException;
 public class BuyService {
 
 	private final RestTemplate restTemplate;
-	private Double taxaDeCambio = 0.0;
+	private static Double taxaDeCambio = 0.0;
 
 	final String URI_PRODUCT = "http://storeservice:8080/product/";
 	final String URI_SELL = "http://storeservice:8080/sell/";
@@ -22,6 +23,18 @@ public class BuyService {
 
 	public BuyService(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
+	}
+	
+	public ResponseEntity buy(BuyDTO buyObject) {
+		try {
+			Product product = getProduct(buyObject);
+//			getExchange(buyObject);
+			
+			return ResponseEntity.ok(product);
+			
+		} catch (OmissionException e) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
 	}
 
 	public Product getProduct(BuyDTO buyObject) {
@@ -35,15 +48,15 @@ public class BuyService {
 				ResponseEntity<Product> responseProduct = restTemplate.getForEntity(URI_PRODUCT + buyObject.getId(),
 						Product.class);
 				Product product = responseProduct.getBody();
+				
 				return product;
-			} catch (OmissionException e) {
-				System.err.println("Erro simulado: " + e.getMessage());
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
+			}			
 		}
+		
+		throw new OmissionException("Produto não encontrado");
 
-		return null;
 	}
 
 	public Double getExchange(BuyDTO buyObject) {
