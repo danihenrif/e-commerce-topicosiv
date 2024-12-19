@@ -26,7 +26,11 @@ public class ExchangeController {
     }
 
     @GetMapping("/{value}")
-    public Mono<Double> exchange(@PathVariable double value) {
+    public Mono<Double> exchange(@PathVariable double value) throws Exception {
+        
+        if (Math.random() < 0.1) {
+            throw new RuntimeException();
+        }
         return webClient
             .get()
             .uri(uriBuilder -> uriBuilder
@@ -53,10 +57,10 @@ public class ExchangeController {
 
                 // Converte a taxa de câmbio e calcula o valor em reais
                 double taxaCambio = Double.parseDouble((String) rates.get("BRL"));
-                double valorConvertido = value * taxaCambio;
+                //double valorConvertido = value * taxaCambio;
                 
-                System.out.println("O valor convertido é R$ " + valorConvertido);
-                return valorConvertido;
+                //System.out.println("O valor convertido é R$ " + valorConvertido);
+                return taxaCambio;
             })
             .onErrorResume(e -> {
                 System.err.println("Erro ao acessar a API externa: " + e.getMessage());

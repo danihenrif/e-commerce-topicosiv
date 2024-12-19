@@ -7,24 +7,24 @@ import org.springframework.web.client.RestTemplate;
 import br.ufrn.imd.e_commerce.model.BuyDTO;
 import br.ufrn.imd.e_commerce.model.Product;
 
-import java.util.Optional;
-import java.util.UUID;
+import br.ufrn.imd.e_commerce.exception.OmissionException;
 
 @Service
 public class BuyService {
 
 	private final RestTemplate restTemplate;
+	private Double taxaDeCambio = 0.0;
 
 	final String URI_PRODUCT = "http://storeservice:8080/product/";
 	final String URI_SELL = "http://storeservice:8080/sell/";
-	final String URI_EXCHANGE = "http://exchangeservice:8080/exchange";
+	final String URI_EXCHANGE = "http://exchangeservice:8080/exchange/";
 	final String URI_BONUS = "http://fidelity:8080/bonus/";
 
 	public BuyService(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
 
-	public Product buy(BuyDTO buyObject){
+	public Product getProduct(BuyDTO buyObject) {
 		int quant = 1;
 		if (buyObject.isFt()) {
 			quant = 5;
@@ -36,25 +36,32 @@ public class BuyService {
 						Product.class);
 				Product product = responseProduct.getBody();
 				return product;
+			} catch (OmissionException e) {
+				System.err.println("Erro simulado: " + e.getMessage());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
 		return null;
-
-		// ResponseEntity<UUID> responseSell = restTemplate.postForEntity(URI_SELL +
-		// buyObject.getId(), null, UUID.class);
-		// ResponseEntity responseBonus = restTemplate.postForEntity(URI_BONUS, new
-		// BonusDTO(
-		// buyObject.getIdUser(),
-		// (int) product.getValue()
-		// ), null);
 	}
 
-	public Double callExchange(BuyDTO buyObject) {
-		ResponseEntity<Double> responseExchange = restTemplate.getForEntity(URI_EXCHANGE, Double.class);
-		return responseExchange.getBody();
+	public Double getExchange(BuyDTO buyObject) {
+		try {
+			ResponseEntity<Double> responseExchange = restTemplate.getForEntity(URI_EXCHANGE + buyObject.getId(),
+					Double.class);
+			taxaDeCambio = responseExchange.getBody();
+			return responseExchange.getBody();
+		} catch (RuntimeException e) {
+			return taxaDeCambio + 1; // Somando 1 para mostrar que está pegando do cache
+		}
 	}
+
+	//TODO: Bonus,Sell;
+	//TODO:Juntar as requisições em uma
+	//TODO: Replicas para exchange;
+	// ResponseEntity responseBonus = restTemplate.postForEntity(URI_BONUS, new BonusDTO(
+		// 		buyObject.getIdUser(),
+		// 		(int) product.getValue()), null);
 
 }
