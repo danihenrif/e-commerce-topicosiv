@@ -1,5 +1,7 @@
 package br.ufrn.imd.fidelity.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class BonusController {
     @PostMapping()
-    public String bonus() {
-        return "seu bonus é nenhum :)";
+    public ResponseEntity bonus() throws InterruptedException {
+    	
+    	if (Math.random() < 0.1) {
+//			Thread.sleep(30000);
+        }
+    	
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }
