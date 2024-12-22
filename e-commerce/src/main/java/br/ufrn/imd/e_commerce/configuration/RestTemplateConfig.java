@@ -33,8 +33,8 @@ public class RestTemplateConfig {
     @Bean
     public CircuitBreaker circuitBreaker() {
     	CircuitBreakerConfig config = CircuitBreakerConfig.custom()
-                .failureRateThreshold(50) // Percentual de falhas permitido
-                .waitDurationInOpenState(Duration .ofSeconds(10)) // Tempo de espera no estado aberto
+                .failureRateThreshold(50) 
+                .waitDurationInOpenState(Duration .ofSeconds(1))
                 .slidingWindowSize(10) 
                 .build();
     	
@@ -46,7 +46,7 @@ public class RestTemplateConfig {
     @Bean
     public TimeLimiter timeLimiter() {
     	TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom()
-                .timeoutDuration(Duration.ofSeconds(1)) // Timeout de 1 segundo
+                .timeoutDuration(Duration.ofSeconds(1)) 
                 .build();
     	
     	return TimeLimiter.of(timeLimiterConfig);

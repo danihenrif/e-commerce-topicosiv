@@ -25,8 +25,8 @@ public class ExchangeController {
         this.webClient = webClientBuilder.baseUrl(API_URL).build();
     }
 
-    @GetMapping("/{value}")
-    public Mono<Double> exchange(@PathVariable double value) throws Exception {
+    @GetMapping()
+    public Mono<Double> exchange() throws Exception {
         
         if (Math.random() < 0.1) {
             throw new RuntimeException();

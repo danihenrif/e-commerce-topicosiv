@@ -15,7 +15,7 @@ public class BonusController {
     public ResponseEntity bonus() throws InterruptedException {
     	
     	if (Math.random() < 0.1) {
-//			Thread.sleep(30000);
+			Thread.sleep(30000);
         }
     	
         return new ResponseEntity(HttpStatus.CREATED);

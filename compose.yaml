@@ -36,13 +36,25 @@ services:
     volumes:
       - ./store/logs:/app/logs
 
+  exchangeservice-2:
+    build:
+      context: .
+      dockerfile: exchange/Dockerfile
+    container_name: exchange-container-2
+    ports:
+      - "8083:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./store/logs:/app/logs
+
   bonusservice:
     build:
       context: .
       dockerfile: fidelity/Dockerfile
     container_name: fidelity-container
     ports:
-      - "8083:8080"
+      - "8084:8080"
     networks:
       - app-network
     volumes:

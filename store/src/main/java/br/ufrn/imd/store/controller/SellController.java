@@ -19,7 +19,7 @@ public class SellController {
 	@PostMapping()
     public ResponseEntity<UUID> sellProduct(@RequestBody SellDTO sellDTO) throws InterruptedException {
 		
-		if (Math.random() < 0.99) {
+		if (Math.random() < 0.1) {
 			Thread.sleep(5000);
         	return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
